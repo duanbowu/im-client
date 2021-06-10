@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>im</title>
+        <script src="./assets/js/vue.js"></script>
+        <style>
+            * {
+                box-sizing: border-box;
+            }
+            .container {
+                width: 748px;
+                height: 640px;
+                padding: 0px;
+                margin: 8px;
+            }
+            .search-box {
+                width: 240px;
+                height: 40px;
+                border: 1px solid #ccc;
+                padding: 0px;
+                margin: 0px 0px 8px 0px;
+            }
+            .key-words {
+                float: left;
+                width: 200px;
+                height: 38px;
+                border: none;
+                padding: 0px 45px 0px 5px;
+                margin: 0px;
+                font-size: 15px;
+            }
+            .key-words:focus {
+                outline: 1px solid grey;
+            }
+            .search-button {
+                width: 40px;
+                height: 38px;
+                padding: 0px;
+                margin: 0px;
+                background: url("assets/img/search.png") no-repeat center;
+                background-size: 25px 25px;
+                border-top: none;
+                border-right: 1px solid #ccc;
+                border-bottom: none;
+                border-left: none;
+                outline: none;
+                cursor: pointer;
+                position: relative;
+                top: -38px;
+                left: 160px;
+            }
+            .add-button {
+                width: 40px;
+                height: 38px;
+                padding: 0px;
+                margin: 0px;
+                background: url("assets/img/add.png") no-repeat center;
+                background-size: 28px 28px;
+                border: none;
+                outline: none;
+                cursor: pointer;
+                position: relative;
+                top: -38px;
+                left: 154px;
+            }
+            .list-box {
+                float: left;
+                width: 240px;
+                height: 640px;
+                border: none;
+                padding: 0px;
+                margin: 0px;
+            }
+            .chat-box {
+                float: left;
+                width: 500px;
+                height: 640px;
+                border: none;
+                padding: 0px;
+                margin: 0px 0px 0px 8px;
+            }
+            .dialog-box {
+                top: 0px;
+                width: 500px;
+                height: 440px;
+                border: 1px solid #ccc;
+                padding: 0px;
+                margin: 0px 0px 8px 0px;
+            }
+            .name-box {
+                top: 0px;
+                width: 500px;
+                height: 40px;
+                border-bottom: 1px solid #ccc;
+                padding: 0px;
+                margin: 0px;
+            }
+            .chat-name {
+                padding: 8px;
+                margin: 0px;
+            }
+            .message-box {
+                top: 40px;
+                width: 500px;
+                height: 400px;
+                padding: 0px;
+                margin: 0px;
+                overflow: auto;
+            }
+            .message-list {
+                padding: 0px;
+                margin: 20px 0px;
+            }
+            .message {
+                width: 470px;
+                padding: 0px;
+                margin: 10px 20px 10px 10px;
+                display: flex;
+            }
+            .message.active {
+                flex-direction: row-reverse;
+            }
+            .message-content {
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                width: auto;
+                height: auto;
+                padding: 5px;
+                margin: 4px 10px auto 10px;
+                font-size: 15px;
+            }
+            .message-content.active {
+                background: #e0e0e0;
+            }
+            .user-box {
+                width: 40px;
+                height: 40px;
+                margin-right: 0px;
+            }
+            .user-box-bigger {
+                height: 60px;
+            }
+            .user-box-bigger.active {
+                height: 40px;
+            }
+            .user-head {
+                width: 40px;
+                height: 40px;
+                padding: 0px;
+                margin: 0px;
+                background: url("assets/img/user.png") no-repeat;
+                background-size: 40px 40px;
+                background-position: 0px 0px;
+            }
+            .user-name {
+                width: 40px;
+                height: 20px;
+            }
+            .input-box {
+                top: 500px;
+                width: 500px;
+                height: 190px;
+                border: 1px solid #ccc;
+                padding: 0px;
+                margin: 8px 0px 0px 0px;
+            }
+            .edit-box {
+                top: 500px;
+                width: 500px;
+                height: 150px;
+                border-bottom: 1px solid #ccc;
+                padding: 0px;
+                margin: 0px;
+            }
+            .input-msg {
+                width: 498px;
+                height: 149px;
+                padding: 8px;
+                border: none;
+                resize: none;
+                font-size: 15px;
+            }
+            .input-msg:focus {
+                outline: 1px solid gray;
+            }
+            .send-box {
+                top: 560px;
+                width: 500px;
+                height: 40px;
+                padding: 0px;
+                margin: 0px;
+            }
+            .enter-button {
+                position: relative;
+                left: 410px;
+                height: 30px;
+                width: 80px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                padding: 0px;
+                margin: 5px;
+                cursor: pointer;
+            }
+            .enter-button:active {
+                background: #e0e0e0;
+            }
+            .tab-box {
+                height: 40px;
+                width: 240px;
+                border: 1px solid #ccc;
+
+            }
+            .tab-button {
+                font-size: 15px;
+                height: 35px;
+                width: 79px;
+                border: none;
+                padding: 8px;
+                margin: 0px;
+                cursor: pointer;
+                background: none;
+                display: inline-block;
+            }
+            .tab-button:hover {
+                border-bottom: 1px solid #ccc;
+            }
+            .tab-button:focus {
+                border-bottom: 1px solid #ccc;
+            }
+            .chat-list {
+                height: 542px;
+                width: 240px;
+                border: 1px solid #ccc;
+                padding: 8px;
+                margin: 8px 0px 0px 0px;
+                overflow: auto;
+            }
+            .chat-item {
+                font-size: 15px;
+                list-style-type: none;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                padding: 8px;
+                cursor: pointer;
+            }
+            .chat-item:hover {
+                background: #e0e0e0;
+            }
+            .chat-item:active {
+                background: #e0e0e0;
+            }
+            .connect-box {
+                width: 240px;
+                height: 40px;
+                padding: none;
+                margin: 8px 0px 0px 0px;
+                float: left;
+            }
+            .user-id {
+                width: 160px;
+                height: 40px;
+                border: 1px solid #ccc;
+                padding: 0px 5px;
+                margin: 0px;
+                font-size: 15px;
+            }
+            .connect-button {
+                font-size: 15px;
+                height: 30px;
+                width: 65px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+                padding: 0px;
+                margin: 5px;
+                cursor: pointer;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="app" class="container">
+            <div class="list-box">
+                <div class="search-box">
+                    <input class="key-words" v-model="keyWords" placeholder="搜索">
+                    <input class="search-button" type="button" v-on:click="">
+                    <input class="add-button" type="button" v-on:click="">
+                </div>
+                <div class="tab-box">
+                    <button v-for="tab in tabs" v-bind:key="tab.id" v-bind:class="['tab-button', {active: currentTab===tab.id}]" v-on:click="onSwitchTab(tab.id)">{{tab.name}}</button>
+                </div>
+                <component class="chat-list" v-bind:is="currentTabComponent" v-bind:list="currentTabDialog" v-on:switch-chat="onSwitchChat"></component>
+            </div>
+            <div class="chat-box">
+                <div class="dialog-box">
+                    <div class="name-box">
+                        <p class="chat-name">{{topicName}}</p>
+                    </div>
+                    <div class="message-box" ref="messagebox">
+                        <div class="message-list" v-if="topicId===dialog.topicId">
+                            <div v-for="(message,index) in dialog.messages" v-bind:key="index" v-bind:class="['message', {active: userId===message.from}]">
+                                <div class="user-box" v-if="dialog.type==='0'">
+                                    <div class="user-head"></div>
+                                </div>
+                                <div v-bind:class="['user-box-bigger', {active: userId===message.from}]" v-else>
+                                    <div class="user-head"></div>
+                                    <div class="user-name" v-if="dialog.type==='1'&&message.from!==userId">{{getUserName(message.from)}}</div>
+                                </div>
+                                <span v-bind:class="['message-content', {active: userId===message.from}]">{{message.content}}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="input-box">
+                    <div class="edit-box">
+                        <textarea class="input-msg" v-model="inputMsg" placeholder="请输入要发送的消息"></textarea>
+                    </div>
+                    <div class="send-box">
+                        <button class="enter-button" v-bind:disabled="!canSendMessage" v-on:click="onSendMsg">发送</button>
+                    </div>
+                </div>
+            </div>
+            <div class="connect-box">
+                <select class="user-id" v-model="userId">
+                    <option disabled value="">请选择</option>
+                    <option v-for="(info,index) in infos.get('0')" v-bind:key="index">{{info[0]}}</option>
+                </select>
+                <button class="connect-button" v-on:click="userConnect">连接</button>
+            </div>
+        </div>
+        <script>
+            // 组件模板
+            let listStyle = {
+                template:  `
+                    <ol>
+                        <li class="chat-item" v-for="item in list" v-bind:key="item.topicId" v-bind:class="{active: topicId===item.topicId}" v-on:click="onCurrentItem(item)">{{item.topicName}}</li>
+                    </ol>
+                `
+            };
+            
+            // 好友组件
+            Vue.component("tab-friend", {
+                props: {
+                    list: {
+                        type: Array,
+                        default: () => []
+                    }
+                },
+                data: function() {
+                    return {topicId: "", topicName: ""};
+                },
+                methods: {
+                    onCurrentItem: function(item) {
+                        topicId=item.topicId;
+                        topicName=item.topicName;
+                        this.$emit("switch-chat", item);
+                    }
+                },
+                template: listStyle.template
+            });
+
+            // 群组组件
+            Vue.component("tab-group", {
+                props: {
+                    list: {
+                        type: Array,
+                        default: () => []
+                    }
+                },
+                data: function() {
+                    return {topicId: "", topicName: ""};
+                },
+                methods: {
+                    onCurrentItem: function(item) {
+                        topicId=item.topicId;
+                        topicName=item.topicName;
+                        this.$emit("switch-chat", item);
+                    }
+                },
+                template: listStyle.template
+            });
+
+            // 会话组件
+            Vue.component("tab-dialog", {
+                props: {
+                    list: {
+                        type: Array,
+                        default: () => []
+                    }
+                },
+                data: function() {
+                    return {topicId: "", topicName: ""};
+                },
+                methods: {
+                    onCurrentItem: function(item) {
+                        topicId=item.topicId;
+                        topicName=item.topicName;
+                        this.$emit("switch-chat", item);
+                    }
+                },
+                template: listStyle.template
+            });
+
+            var vm = new Vue({
+                el: "#app",
+                data: {
+                    userId: "",  // 当前用户编号
+                    topicId: "",
+                    topicName: "",
+                    currentTab: "friend",
+                    keyWords: "",
+                    inputMsg: "",
+                    tabs: [
+                        {id: "friend", name: "好友"}, 
+                        {id: "group", name: "群组"}, 
+                        {id: "dialog", name: "会话"}
+                    ],
+                    // 当前会话
+                    dialog: {
+                        type: "",
+                        topicId: "",
+                        topicName: "",
+                        lastTime: "",
+                        messages: []
+                    },
+                    infos: null,
+                    friends: null,
+                    groups: null,
+                    groupMembers: null,
+                    // 所有会话
+                    dialogs: null,
+                    websocket: null
+                },
+                created: function() {
+                    // 初始化
+                    this.infos = new Map();
+                    this.friends = new Map();
+                    this.groups = new Map();
+                    this.groupMembers = new Map();
+                    this.dialogs = new Map();
+                    // 映射关系
+                    let userInfos = new Map();
+                    userInfos.set("user00", "段二");
+                    userInfos.set("user01", "张三");
+                    userInfos.set("user02", "李四");
+                    userInfos.set("user03", "王五");
+                    this.infos.set("0", userInfos);
+                    let groupInfos = new Map();
+                    groupInfos.set("group01", "开发群");
+                    groupInfos.set("group02", "测试群");
+                    groupInfos.set("group03", "管理群");
+                    this.infos.set("1", groupInfos);
+                    // 好友列表
+                    this.friends.set("user00", ["user00", "user01", "user02", "user03"]);
+                    this.friends.set("user01", ["user00", "user01", "user02", "user03"]);
+                    this.friends.set("user02", ["user00", "user01", "user02", "user03"]);
+                    this.friends.set("user03", ["user00", "user01", "user02", "user03"]);
+                    // 群组列表
+                    this.groups.set("user00", ["group01"]);
+                    this.groups.set("user01", ["group01", "group02"]);
+                    this.groups.set("user02", ["group02", "group03"]);
+                    this.groups.set("user03", ["group02", "group03"]);
+                    // 群组成员
+                    let group01 = ["user00", "user01", "user02", "user03"];
+                    this.groupMembers.set("group01", group01);
+                    let group02 = ["user01", "user02", "user03"];
+                    this.groupMembers.set("group02", group02);
+                    let group03 = ["user02", "user03"];
+                    this.groupMembers.set("group03", group03);
+                    // 段二聊天记录
+                    let dialogDE = {
+                        type: "0",
+                        topicId: "user00",
+                        topicName: "段二",
+                        lastTime: "2021-05-20 12:00:30",
+                        messages: []
+                    };
+                    // 张三聊天记录
+                    let dialogZS = {
+                        type: "0",
+                        topicId: "user01",
+                        topicName: "张三",
+                        lastTime: "2021-05-20 12:00:40",
+                        messages: []
+                    };
+                    // 李四聊天记录
+                    let dialogLS = {
+                        type: "0",
+                        topicId: "user02",
+                        topicName: "李四",
+                        lastTime: "2021-05-20 12:01:10",
+                        messages: []
+                    };
+                    // 王五聊天记录
+                    let dialogWW = {
+                        type: "0",
+                        topicId: "user03",
+                        topicName: "王五",
+                        lastTime: "2021-05-20 12:02:10",
+                        messages: []
+                    };
+                    // 开发群聊天记录
+                    let dialogKF = {
+                        type: "1",
+                        topicId: "group01",
+                        topicName: "开发群",
+                        lastTime: "2021-05-20 12:03:10",
+                        messages: [
+                            {from: "user00", to: "group01", content: "我们去吃饭了", time: "2021-05-20 12:03:00"},
+                            {from: "user01", to: "group01", content: "有人一起吗？", time: "2021-05-20 12:03:10"}
+                        ]
+                    };
+                    // 测试群聊天记录
+                    let dialogCS = {
+                        type: "1",
+                        topicId: "group02",
+                        topicName: "测试群",
+                        lastTime: "2021-05-20 12:04:10",
+                        messages: [
+                            {from: "user02", to: "group02", content: "吃饭去吗", time: "2021-05-20 12:04:00"},
+                            {from: "user03", to: "group02", content: "已经到食堂了", time: "2021-05-20 12:04:10"}
+                        ]
+                    };
+                    // 管理群聊天记录
+                    let dialogGL = {
+                        type: "1",
+                        topicId: "group03",
+                        topicName: "管理群",
+                        lastTime: "",
+                        messages: []
+                    };
+                    // 所有会话记录
+                    this.dialogs.set(dialogDE.topicId, dialogDE);
+                    this.dialogs.set(dialogZS.topicId, dialogZS);
+                    this.dialogs.set(dialogLS.topicId, dialogLS);
+                    this.dialogs.set(dialogWW.topicId, dialogWW);
+                    this.dialogs.set(dialogKF.topicId, dialogKF);
+                    this.dialogs.set(dialogCS.topicId, dialogCS);
+                    this.dialogs.set(dialogGL.topicId, dialogGL);
+                },
+                distroyed: function() {
+                    this.websocket.close();
+                },
+                computed: {
+                    // tab的计算属性
+                    currentTabComponent: function() {
+                        return "tab-" + this.currentTab.toLowerCase();
+                    },
+                    // tab对应会话的计算属性
+                    currentTabDialog: function() {
+                        if (!this.userId) {
+                            return [];
+                        }
+                        let friendDialogs = [];
+                        let groupsDialogs = [];
+                        let dialogs = [];
+                        for (let i = 0; i < this.currentFriends.length; i++) {
+                            if (this.dialogs.has(this.currentFriends[i])) {
+                                friendDialogs.push(this.dialogs.get(this.currentFriends[i]));
+                                dialogs.push(this.dialogs.get(this.currentFriends[i]));
+                            }
+                        }
+                        for (let i = 0; i < this.currentGroups.length; i++) {
+                            if (this.dialogs.has(this.currentGroups[i])) {
+                                groupsDialogs.push(this.dialogs.get(this.currentGroups[i]));
+                                dialogs.push(this.dialogs.get(this.currentGroups[i]));
+                            }
+                        }
+                        if (this.currentTab.toLowerCase() === this.tabs[0].id.toLowerCase()) {
+                            return friendDialogs.length > 0 ? friendDialogs : [];
+                        } else if (this.currentTab.toLowerCase() === this.tabs[1].id.toLowerCase()) {
+                            return groupsDialogs.length > 0 ? groupsDialogs : [];
+                        } else if (this.currentTab.toLowerCase() === this.tabs[2].id.toLowerCase()) {
+                            return dialogs.length > 0 ? dialogs.filter(dialog => dialog.messages.length > 0).sort(function(a, b) {return a.lastTime < b.lastTime ? 1 : -1}) : [];
+                        } else {
+                            return [];
+                        }
+                    },
+                    // 好友列表的计算属性
+                    currentFriends: function() {
+                        return this.friends.get(this.userId);
+                    },
+                    // 群组列表的计算属性
+                    currentGroups: function() {
+                        return this.groups.get(this.userId);
+                    },
+                    // 发送按钮可用的计算属性
+                    canSendMessage: function() {
+                        return this.topicId.length > 0 && this.inputMsg.length > 0
+                    },
+                    currentType: function() {
+                        return this.currentTab === ("" || "friend") ? "0" : "1";
+                    },
+                    userName: function() {
+                        return this.infos.get("0").get(this.userId);
+                    }
+                },
+                methods: {
+                    // 用户名称
+                    getUserName: function(id) {
+                        return this.infos.get("0").get(id);
+                    },
+                    // 会话名称
+                    getTopicName: function(type, id) {
+                        return this.infos.get(type).get(id);
+                    },
+                    // 滚动条自动触底
+                    scrollToBottom: function() {
+                        this.$nextTick(() => {
+                            let div = this.$refs.messagebox;
+                            div.scrollTop = div.scrollHeight;
+                        })
+                    },
+                    // 当前时间
+                    currentTime: function() {
+                        let date = new Date();
+                        let month = date.getMonth() + 1;
+                        if (month < 10) {
+                            month = "0" + month;
+                        }
+                        let day = date.getDate();
+                        if (day < 10) {
+                            day = "0" + day;
+                        }
+                        let hours = date.getHours();
+                        if (hours < 10) {
+                            hours = "0" + hours
+                        }
+                        let minutes = date.getMinutes();
+                        if (minutes < 10) {
+                            minutes = "0" + minutes;
+                        }
+                        let seconds = date.getSeconds();
+                        if (seconds < 10) {
+                            seconds = "0" + seconds;
+                        }
+                        return date.getFullYear() + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
+                    },
+                    // 切换tab
+                    onSwitchTab: function(tab) {
+                        this.currentTab = tab;
+                        this.topicId = "",
+                        this.topicName = "",
+                        this.dialog = {
+                            type: "",
+                            topicId: "",
+                            topicName: "",
+                            lastTime: "",
+                            messages: []
+                        }
+                    },
+                    // 切换聊天
+                    onSwitchChat: function(item) {
+                        this.topicId = item.topicId;
+                        this.topicName = item.topicName;
+                        this.dialog = item;
+                    },
+                    // 发送消息
+                    onSendMsg: function() {
+                        // 不能发送空消息
+                        if (this.inputMsg.length <= 0) {
+                            return;
+                        }
+                        let data = {
+                            type: this.currentType,
+                            from: this.userId,
+                            to: this.topicId,
+                            content: this.inputMsg,
+                            time: this.currentTime()
+                        }
+                        // 推送消息到聊天框
+                        this.dialog.messages.push(data);
+                        this.dialog.lastTime = data.time;
+                        // 更新当前会话
+                        this.dialogs.set(this.dialog.topicId, this.dialog);
+                        // ws发送消息
+                        this.onsendWS(JSON.stringify(data));
+                        // 清空输入框
+                        this.inputMsg = "";
+                        this.scrollToBottom();
+                    },
+                    userConnect: function() {
+                        this.initWebSocket();
+                    },
+                    initWebSocket: function() {
+                        const url = "ws://127.0.0.1:8080/websocket/" + this.userId;
+                        this.websocket = new WebSocket(url);
+                        this.websocket.onopen = this.onopenWS;
+                        this.websocket.onerror = this.onerrorWS;
+                        this.websocket.onmessage = this.onmessageWS;
+                        this.websocket.onclose = this.oncloseWS;
+                    },
+                    // ws连接成功
+                    onopenWS: function() {
+                        console.log(this.userName + "上线了");
+                        let data = {
+                            type: this.currentType,
+                            from: this.userId,
+                            to: this.topicId,
+                            content: this.userName + "上线了",
+                            time: this.currentTime()
+                        }
+                        this.onsendWS(JSON.stringify(data));
+                    },
+                    // ws连接失败
+                    onerrorWS: function() {
+                        console.log(this.userName + "连接失败");
+                        this.initWebSocket();
+                    },
+                    // ws收到消息
+                    onmessageWS: function(e) {
+                        console.log(this.userName + "收到消息: " + e.data);
+                        let data = JSON.parse(e.data);
+                        let message = {
+                                from: data.from,
+                                to: data.to,
+                                content: data.content,
+                                time: data.time
+                            };
+                        // 如果是自己发送的消息，直接忽略
+                        if (message.from === this.userId) {
+                            return;
+                        }
+                        let toWhere;
+                        if (data.type === "0") {
+                            // 如果是好友消息
+                            toWhere = message.from;
+                        } else {
+                            // 如果是群组消息
+                            toWhere = message.to;
+                        }
+                        if (this.dialogs.has(toWhere)) {
+                            let dialog = this.dialogs.get(toWhere);
+                            dialog.lastTime = message.time;
+                            dialog.messages.push(message);
+                            this.dialogs.set(toWhere, dialog);
+                        } else {
+                            let dialog = {
+                                type: data.type,
+                                topicId: toWhere,
+                                topicName: this.getTopicName(data.type, toWhere),
+                                lastTime: message.time,
+                                messages: [message]
+                            }
+                            this.dialogs.set(toWhere, dialog);
+                        }
+                        this.scrollToBottom();
+                    },
+                    // ws断开连接
+                    oncloseWS: function(e) {
+                        console.log("断开连接", e);
+                    },
+                    // ws发送消息
+                    onsendWS: function(data) {
+                        console.log(this.userName + "发送消息: " + data);
+                        this.websocket.send(data);
+                    }
+                }
+            });
+        </script>
+    </body>
+</html>
